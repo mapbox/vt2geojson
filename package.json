@@ -1,0 +1,37 @@
+{
+  "name": "vt2geojson",
+  "description": "Dump vector tiles to GeoJSON",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": {
+    "vt2geojson": "./vt2geojson"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mapbox/vt2geojson.git"
+  },
+  "author": "John Firebaugh <john@mapbox.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mapbox/vt2geojson/issues"
+  },
+  "homepage": "https://github.com/mapbox/vt2geojson",
+  "dependencies": {
+    "pbf": "^1.3.5",
+    "request": "^2.64.0",
+    "vector-tile": "^1.1.3",
+    "yargs": "^3.27.0"
+  },
+  "devDependencies": {
+    "documentation": "^2.1.0-alpha2",
+    "eslint": "^1.6.0",
+    "eslint-config-mourner": "^1.0.1",
+    "nock": "^2.13.0",
+    "tap": "^2.1.1"
+  },
+  "scripts": {
+    "lint": "eslint vt2geojson *.js",
+    "docs": "documentation --lint --github --format html --output .",
+    "test": "npm run lint && tap --cov test.js"
+  }
+}

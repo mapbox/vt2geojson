@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+var vt2geojson = require('./');
+var yargs = require('yargs');
+
+var args = yargs
+    .reset()
+    .demand(1)
+    .string('_')
+    .usage('Usage: $0 [options] URL')
+
+    .describe('l', 'include only the specified layer')
+    .alias('l', 'layer')
+
+    .describe('x', 'tile x coordinate (normally inferred from the URL)')
+    .describe('y', 'tile y coordinate (normally inferred from the URL)')
+    .describe('z', 'tile z coordinate (normally inferred from the URL)')
+
+    .help('h')
+    .alias('h', 'help')
+
+    .example('$0 --layer state_label https://api.mapbox.com/v4/mapbox.mapbox-streets-v6/9/150/194.vector.pbf?access_token=${MAPBOX_ACCESS_TOKEN}')
+    .wrap(null)
+    .argv;
+
+args.url = args._[0];
+
+vt2geojson(args, function (err, geojson) {
+    if (err) {
+        console.error(err.message);
+        process.exit(-1);
+    }
+
+    console.log(JSON.stringify(geojson, null, 2));
+});
