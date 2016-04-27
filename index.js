@@ -46,6 +46,19 @@ module.exports = function(args, callback) {
                 });
             }
         });
+    } else {
+        if (parsed.protocol && parsed.protocol.indexOf('file') > -1) {
+            args.uri = parsed.host + parsed.pathname;
+        }
+        fs.lstat(args.uri, function(err, stats) {
+            if (err) throw err;
+            if (stats.isFile()) {
+                fs.readFile(args.uri, function(err, data) {
+                    if (err) throw err;
+                    readTile(data);
+                });
+            }
+        });
     }
 };
 
