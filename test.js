@@ -9,9 +9,84 @@ var tile = nock('http://api.mapbox.com')
     .get('/9/150/194.pbf')
     .reply(200, fs.readFileSync('fixtures/9-150-194.pbf'));
 
-test('nj', function (t) {
+test('fails without uri', function (t) {
+    vt2geojson({}, function (err, result) {
+       t.ok(err);
+       t.equal(err.message, 'No URI found. Please provide a valid URI to your vector tile.');
+       t.notOk(result);
+       t.end();
+    });
+})
+
+test('fails without zxy', function (t) {
     vt2geojson({
-        url: 'http://api.mapbox.com/9/150/194.pbf',
+        uri: './fixtures/9-150-194.pbf',
+        layer: 'state_label'
+    }, function (err, result) {
+       t.ok(err);
+       t.equal(err.message, 'Could not determine tile z, x, and y from "./fixtures/9-150-194.pbf"; specify manually with -z <z> -x <x> -y <y>', 'expected error message');
+       t.notOk(result);
+       t.end();
+    });
+});
+
+test('url', function (t) {
+    vt2geojson({
+        uri: 'http://api.mapbox.com/9/150/194.pbf',
+        layer: 'state_label'
+    }, function (err, result) {
+        t.ifError(err);
+        t.deepEqual(result.type, 'FeatureCollection');
+        t.deepEqual(result.features[0].properties.name, 'New Jersey');
+        t.deepEqual(result.features[0].geometry, {
+            type: 'Point',
+            coordinates: [-74.38928604125977, 40.15027547340139]
+        });
+        t.end();
+    });
+});
+
+test('local file: relative', function (t) {
+    vt2geojson({
+        uri: './fixtures/9-150-194.pbf',
+        layer: 'state_label',
+        z: 9,
+        x: 150,
+        y: 194
+    }, function (err, result) {
+        t.ifError(err);
+        t.deepEqual(result.type, 'FeatureCollection');
+        t.deepEqual(result.features[0].properties.name, 'New Jersey');
+        t.deepEqual(result.features[0].geometry, {
+            type: 'Point',
+            coordinates: [-74.38928604125977, 40.15027547340139]
+        });
+        t.end();
+    });
+});
+
+test('local file: absolute uri with file: protocol', function (t) {
+    vt2geojson({
+        uri: 'file://./fixtures/9-150-194.pbf',
+        layer: 'state_label',
+        z: 9,
+        x: 150,
+        y: 194
+    }, function (err, result) {
+        t.ifError(err);
+        t.deepEqual(result.type, 'FeatureCollection');
+        t.deepEqual(result.features[0].properties.name, 'New Jersey');
+        t.deepEqual(result.features[0].geometry, {
+            type: 'Point',
+            coordinates: [-74.38928604125977, 40.15027547340139]
+        });
+        t.end();
+    });
+});
+
+test('local file with directory zxy directory structure', function (t) {
+    vt2geojson({
+        uri: './fixtures/9/150/194.pbf',
         layer: 'state_label'
     }, function (err, result) {
         t.ifError(err);
