@@ -13,7 +13,7 @@ module.exports = function(args, callback) {
     args.z = args.z === undefined ? zxy[1] : args.z;
 
     if (args.x === undefined || args.y === undefined || args.z === undefined) {
-        return callback(new Error(format("Could not determine tile z, x, and y from %s; specify manually with -z <z> -x <x> -y <y>", JSON.stringify(url))));
+        return callback(new Error(format('Could not determine tile z, x, and y from %s; specify manually with -z <z> -x <x> -y <y>', JSON.stringify(url))));
     }
 
     request.get({
@@ -23,23 +23,27 @@ module.exports = function(args, callback) {
     }, function (err, response, body) {
         if (err) throw err;
 
+        if (response.statusCode === 401 && response.statusMessage === 'Unauthorized') {
+            return callback(new Error('Invalid Token'));
+        }
+
         var tile = new vt.VectorTile(new Protobuf(body));
         var layers = args.layer || Object.keys(tile.layers);
 
         if (!Array.isArray(layers))
             layers = [layers]
 
+        var collection = {type: 'FeatureCollection', features: []};
+
         layers.forEach(function (layerID) {
             var layer = tile.layers[layerID];
-            var collection = {type: "FeatureCollection", features: []};
-
             for (var i = 0; i < layer.length; i++) {
                 var feature = layer.feature(i).toGeoJSON(args.x, args.y, args.z);
                 feature.coordinates = layer.feature(i).loadGeometry();
                 collection.features.push(feature);
             }
-
-            callback(null, collection);
         });
+
+        callback(null, collection);
     });
 };
