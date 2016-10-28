@@ -19,7 +19,7 @@ test('nj', function (t) {
         t.deepEqual(result.features[0].properties.name, 'New Jersey');
         t.deepEqual(result.features[0].geometry, {
             type: 'Point',
-            coordinates: [-74.38928604125977, 40.150275473401365]
+            coordinates: [-74.38928604125977, 40.15027547340139]
         });
         t.end();
     });
