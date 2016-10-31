@@ -6,6 +6,7 @@ var Protobuf = require('pbf');
 var format = require('util').format;
 var fs = require('fs');
 var url = require('url');
+var zlib = require('zlib');
 
 module.exports = function(args, callback) {
 
@@ -56,6 +57,13 @@ module.exports = function(args, callback) {
 };
 
 function readTile(args, buffer, callback) {
+
+    // handle zipped buffers
+    if (buffer[0] === 0x78 && buffer[1] === 0x9C) {
+        buffer = zlib.inflateSync(buffer);
+    } else if (buffer[0] === 0x1F && buffer[1] === 0x8B) {
+        buffer = zlib.gunzipSync(buffer);
+    }
 
     var tile = new vt.VectorTile(new Protobuf(buffer));
     var layers = args.layer || Object.keys(tile.layers);
