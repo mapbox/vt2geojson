@@ -1,4 +1,4 @@
-Dump vector tiles to GeoJSON
+Dump vector tiles to GeoJSON from remote URLs or local system files.
 
 ## Installation
 
@@ -8,14 +8,40 @@ npm install -g vt2geojson
 
 ## Usage
 
+Node.js
+
+```javascript
+var vt2geojson = require('vt2geojson');
+
+// remote file
+vt2geojson({
+    uri: 'http://api.example.com/9/150/194.pbf',
+    layer: 'layer_name'
+}, function (err, result) {
+    if (err) throw err;
+    console.log(result); // => GeoJSON FeatureCollection
+});
+
+// local file
+vt2geojson({
+    uri: './local/file/buffer.mvt',
+    layer: 'layer_name'
+}, function (err, result) {
+    if (err) throw err;
+    console.log(result); // => GeoJSON FeatureCollection
+});
 ```
-Usage: vt2geojson [options] URL
+
+CLI
+
+```
+Usage: vt2geojson [options] URI
 
 Options:
   -l, --layer  include only the specified layer
-  -x           tile x coordinate (normally inferred from the URL)
-  -y           tile y coordinate (normally inferred from the URL)
-  -z           tile z coordinate (normally inferred from the URL)
+  -x           tile x coordinate (normally inferred from the URI)
+  -y           tile y coordinate (normally inferred from the URI)
+  -z           tile z coordinate (normally inferred from the URI)
   -h, --help   Show help  [boolean]
 
 Examples:
