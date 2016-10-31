@@ -15,7 +15,7 @@ var vt2geojson = require('vt2geojson');
 
 // remote file
 vt2geojson({
-    uri: 'http://api.example.com/9/150/194.pbf',
+    uri: 'http://api.example.com/9/150/194.mvt',
     layer: 'layer_name'
 }, function (err, result) {
     if (err) throw err;
@@ -25,7 +25,10 @@ vt2geojson({
 // local file
 vt2geojson({
     uri: './local/file/buffer.mvt',
-    layer: 'layer_name'
+    layer: 'layer_name',
+    z: 9,
+    x: 150,
+    y: 194
 }, function (err, result) {
     if (err) throw err;
     console.log(result); // => GeoJSON FeatureCollection
