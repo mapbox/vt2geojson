@@ -31,6 +31,12 @@ module.exports = function(args, callback) {
             encoding: null
         }, function (err, response, body) {
             if (err) throw err;
+            if (response.statusCode === 401 && response.statusMessage === 'Unauthorized') {
+                return callback(new Error('Invalid Token'));
+            }
+            if (response.statusCode !== 200) {
+                return callback(new Error(format('Error retrieving data from %s. Server responded with code: %s', JSON.stringify(args.uri), response.statusCode)));
+            }
             readTile(args, body, callback);
         });
     } else {
