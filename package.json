@@ -1,7 +1,7 @@
 {
   "name": "vt2geojson",
   "description": "Dump vector tiles to GeoJSON",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "bin": {
     "vt2geojson": "./vt2geojson"
