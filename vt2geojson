@@ -7,7 +7,7 @@ var args = yargs
     .reset()
     .demand(1)
     .string('_')
-    .usage('Usage: $0 [options] URL')
+    .usage('Usage: $0 [options] URI')
 
     .describe('l', 'include only the specified layer')
     .alias('l', 'layer')
@@ -20,10 +20,11 @@ var args = yargs
     .alias('h', 'help')
 
     .example('$0 --layer state_label https://api.mapbox.com/v4/mapbox.mapbox-streets-v6/9/150/194.vector.pbf?access_token=${MAPBOX_ACCESS_TOKEN}')
+    .example('$0 -x 150 -y 194 -z 9 --layer state_label fixtures/9-150-194.pbf')
     .wrap(null)
     .argv;
 
-args.url = args._[0];
+args.uri = args._[0];
 
 vt2geojson(args, function (err, geojson) {
     if (err) {
