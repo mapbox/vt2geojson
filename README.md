@@ -3,7 +3,7 @@ Dump vector tiles to GeoJSON from remote URLs or local system files.
 ## Installation
 
 ```
-npm install -g vt2geojson
+npm install -g @mapbox/vt2geojson
 ```
 
 ## Usage
@@ -11,7 +11,7 @@ npm install -g vt2geojson
 Node.js
 
 ```javascript
-var vt2geojson = require('vt2geojson');
+var vt2geojson = require('@mapbox/vt2geojson');
 
 // remote file
 vt2geojson({
