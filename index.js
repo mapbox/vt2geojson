@@ -75,10 +75,12 @@ function readTile(args, buffer, callback) {
 
     layers.forEach(function (layerID) {
         var layer = tile.layers[layerID];
-        for (var i = 0; i < layer.length; i++) {
-            var feature = layer.feature(i).toGeoJSON(args.x, args.y, args.z);
-            feature.coordinates = layer.feature(i).loadGeometry();
-            collection.features.push(feature);
+        if (layer) {
+            for (var i = 0; i < layer.length; i++) {
+                var feature = layer.feature(i).toGeoJSON(args.x, args.y, args.z);
+                feature.coordinates = layer.feature(i).loadGeometry();
+                collection.features.push(feature);
+            } 
         }
     });
 
