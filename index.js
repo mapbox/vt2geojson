@@ -23,7 +23,7 @@ module.exports = function(args, callback) {
             args.y = zxy[3];
         }
     }
-    
+
     var parsed = url.parse(args.uri);
     if (parsed.protocol && (parsed.protocol === 'http:' || parsed.protocol === 'https:')) {
         request.get({
@@ -32,7 +32,7 @@ module.exports = function(args, callback) {
             encoding: null
         }, function (err, response, body) {
             if (err) throw err;
-            if (response.statusCode === 401 && response.statusMessage === 'Unauthorized') {
+            if (response.statusCode === 401) {
                 return callback(new Error('Invalid Token'));
             }
             if (response.statusCode !== 200) {
@@ -79,9 +79,9 @@ function readTile(args, buffer, callback) {
             for (var i = 0; i < layer.length; i++) {
                 var feature = layer.feature(i).toGeoJSON(args.x, args.y, args.z);
                 feature.coordinates = layer.feature(i).loadGeometry();
-                if (layers.length > 1) feature.properties.layer = layerID;
+                if (layers.length > 1) feature.properties.vt_layer = layerID;
                 collection.features.push(feature);
-            } 
+            }
         }
     });
 
