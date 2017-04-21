@@ -1,3 +1,7 @@
+## 1.1.3
+
+- Fix GeoJSON objects returned, which included `feauture.coordinates` which is invalid according to the GeoJSON spec [#5](https://github.com/mapbox/vt2geojson/issues/5)
+
 ## 1.1.2
 
 - Add the `vt_layer` property to features when the request consists of multiple layers [#6](https://github.com/mapbox/vt2geojson/pull/6)
