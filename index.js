@@ -79,6 +79,7 @@ function readTile(args, buffer, callback) {
             for (var i = 0; i < layer.length; i++) {
                 var feature = layer.feature(i).toGeoJSON(args.x, args.y, args.z);
                 feature.coordinates = layer.feature(i).loadGeometry();
+                if (layers.length > 1) feature.properties.layer = layerID;
                 collection.features.push(feature);
             } 
         }
