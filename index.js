@@ -31,7 +31,10 @@ module.exports = function(args, callback) {
             gzip: true,
             encoding: null
         }, function (err, response, body) {
-            if (err) throw err;
+            if (err) {
+                console.log('args', JSON.stringify(args), 'error', JSON.stringify(err));
+                throw err;
+            }
             if (response.statusCode === 401) {
                 return callback(new Error('Invalid Token'));
             }
