@@ -32,7 +32,6 @@ module.exports = function(args, callback) {
             encoding: null
         }, function (err, response, body) {
             if (err) {
-                console.log('args', JSON.stringify(args), 'error', JSON.stringify(err));
                 return callback(err);
             }
             if (response.statusCode === 401) {
