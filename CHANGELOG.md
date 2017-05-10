@@ -1,3 +1,11 @@
+## 1.1.5
+
+- Fix the version issues
+
+## 1.1.4
+
+- Return error when request for vector tiles fails, instead of throwing it [#13](https://github.com/mapbox/vt2geojson/issues/13)
+
 ## 1.1.3
 
 - Fix GeoJSON objects returned, which included `feauture.coordinates` which is invalid according to the GeoJSON spec [#5](https://github.com/mapbox/vt2geojson/issues/5)
