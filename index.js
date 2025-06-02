@@ -88,3 +88,5 @@ function readTile(args, buffer, callback) {
 
     callback(null, collection);
 }
+
+module.exports.fromBuffer = readTile
