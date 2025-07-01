@@ -1,7 +1,7 @@
 {
   "name": "@mapbox/vt2geojson",
   "description": "Dump vector tiles to GeoJSON",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "main": "index.js",
   "bin": {
     "vt2geojson": "./vt2geojson"
@@ -17,21 +17,21 @@
   },
   "homepage": "https://github.com/mapbox/vt2geojson",
   "dependencies": {
+    "axios": "^1.10.0",
     "pbf": "^1.3.5",
-    "request": "^2.64.0",
     "vector-tile": "git+https://github.com/mapbox/vector-tile-js.git#classify-rings",
     "yargs": "^3.27.0"
   },
   "devDependencies": {
-    "documentation": "^2.1.0-alpha2",
+    "documentation": "^14.0.3",
     "eslint": "^1.6.0",
     "eslint-config-mourner": "^1.0.1",
-    "nock": "^2.13.0",
-    "tap": "^2.1.1"
+    "nock": "^14.0.5",
+    "tap": "^21.1.0"
   },
   "scripts": {
     "lint": "eslint vt2geojson *.js",
     "docs": "documentation --lint --github --format html --output .",
-    "test": "npm run lint && tap --cov test.js"
+    "test": "npm run lint && tap test.js"
   }
 }

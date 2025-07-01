@@ -1,7 +1,7 @@
 'use strict';
 
 var vt = require('vector-tile');
-var request = require('request');
+var axios = require('axios');
 var Protobuf = require('pbf');
 var format = require('util').format;
 var fs = require('fs');
@@ -31,21 +31,18 @@ module.exports = function(args, callback) {
 
     var parsed = url.parse(args.uri);
     if (parsed.protocol && (parsed.protocol === 'http:' || parsed.protocol === 'https:')) {
-        request.get({
-            url: args.uri,
-            gzip: true,
-            encoding: null
-        }, function (err, response, body) {
-            if (err) {
-                return callback(err);
+        axios.get(args.uri, {
+            responseType: 'arraybuffer'
+        }).then(function(response) {
+            readTile(args, Buffer.from(response.data), callback);
+        }).catch(function(err) {
+            if (err.response) {
+                if (err.response.status === 401) {
+                    return callback(new Error('Invalid Token'));
+                }
+                return callback(new Error(format('Error retrieving data from %s. Server responded with code: %s', JSON.stringify(args.uri), err.response.status)));
             }
-            if (response.statusCode === 401) {
-                return callback(new Error('Invalid Token'));
-            }
-            if (response.statusCode !== 200) {
-                return callback(new Error(format('Error retrieving data from %s. Server responded with code: %s', JSON.stringify(args.uri), response.statusCode)));
-            }
-            readTile(args, body, callback);
+            return callback(err);
         });
     } else {
         if (parsed.protocol && parsed.protocol === 'file:') {
