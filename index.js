@@ -12,6 +12,11 @@ module.exports = function(args, callback) {
 
     if (!args.uri) return callback(new Error('No URI found. Please provide a valid URI to your vector tile.'));
 
+    // Validate URI format - only allow .mvt, .mvt.gz, or .pbf files
+    if (!isValidVectorTileFormat(args.uri)) {
+        return callback(new Error('Invalid vector tile format. Only .mvt, .mvt.gz, and .pbf files are supported.'));
+    }
+
     // handle zxy stuffs
     if (args.x === undefined || args.y === undefined || args.z === undefined) {
         var zxy = args.uri.match(/\/(\d+)\/(\d+)\/(\d+)/);
@@ -57,6 +62,25 @@ module.exports = function(args, callback) {
         });
     }
 };
+
+function isValidVectorTileFormat(uri) {
+    // Parse the URI to get the pathname, handling both URLs and file paths
+    var parsed = url.parse(uri);
+    var pathname = parsed.pathname || uri;
+    
+    // Remove query parameters for simple file paths
+    if (!parsed.protocol) {
+        pathname = uri.split('?')[0];
+    }
+    
+    // Convert to lowercase for case-insensitive comparison
+    var lowerPathname = pathname.toLowerCase();
+    
+    // Check for valid extensions (.mvt.gz must be checked first as it contains .mvt)
+    return lowerPathname.endsWith('.mvt.gz') ||
+           lowerPathname.endsWith('.mvt') ||
+           lowerPathname.endsWith('.pbf');
+}
 
 function readTile(args, buffer, callback) {
 
