@@ -42,6 +42,21 @@ test('fails without zxy', function (t) {
     });
 });
 
+test('fails with invalid file format', function (t) {
+    vt2geojson({
+        uri: './fixtures/invalid-file.json',
+        layer: 'state_label',
+        z: 9,
+        x: 150,
+        y: 194
+    }, function (err, result) {
+       t.ok(err);
+       t.equal(err.message, 'Invalid vector tile format. Only .mvt, .mvt.gz, and .pbf files are supported.');
+       t.notOk(result);
+       t.end();
+    });
+});
+
 test('fails with 401 response: invalid token', function (t) {
   vt2geojson({
       uri: 'http://invalid.mapbox.com/16/46886/30383.mvt',
@@ -69,12 +84,12 @@ test('url', function (t) {
         uri: 'http://api.mapbox.com/9/150/194.mvt',
         layer: 'state_label'
     }, function (err, result) {
-        t.ifError(err);
-        t.deepEqual(result.type, 'FeatureCollection');
-        t.deepEqual(result.features[0].properties.name, 'New Jersey');
-        t.deepEqual(result.features[0].geometry, {
+        t.equal(err, null);
+        t.same(result.type, 'FeatureCollection');
+        t.same(result.features[0].properties.name, 'New Jersey');
+        t.same(result.features[0].geometry, {
             type: 'Point',
-            coordinates: [-74.38928604125977, 40.15027547340139]
+            coordinates: [-74.38928604125977, 40.150275473401365]
         });
         t.end();
     });
@@ -85,9 +100,9 @@ test('undefined layer', function (t) {
         uri: 'http://a.tiles.mapbox.com/v4/mapbox.mapbox-streets-v7/16/46886/30383.mvt',
         layer: 'water'
     }, function (err, result) {
-        t.ifError(err);
-        t.deepEqual(result.type, 'FeatureCollection');
-        t.deepEqual(result.features.length, 0);
+        t.equal(err, null);
+        t.same(result.type, 'FeatureCollection');
+        t.same(result.features.length, 0);
         t.end();
     });
 });
@@ -101,12 +116,12 @@ test('local file: relative', function (t) {
         x: 150,
         y: 194
     }, function (err, result) {
-        t.ifError(err);
-        t.deepEqual(result.type, 'FeatureCollection');
-        t.deepEqual(result.features[0].properties.name, 'New Jersey');
-        t.deepEqual(result.features[0].geometry, {
+        t.equal(err, null);
+        t.same(result.type, 'FeatureCollection');
+        t.same(result.features[0].properties.name, 'New Jersey');
+        t.same(result.features[0].geometry, {
             type: 'Point',
-            coordinates: [-74.38928604125977, 40.15027547340139]
+            coordinates: [-74.38928604125977, 40.150275473401365]
         });
         t.end();
     });
@@ -120,12 +135,12 @@ test('local file: absolute uri with file: protocol', function (t) {
         x: 150,
         y: 194
     }, function (err, result) {
-        t.ifError(err);
-        t.deepEqual(result.type, 'FeatureCollection');
-        t.deepEqual(result.features[0].properties.name, 'New Jersey');
-        t.deepEqual(result.features[0].geometry, {
+        t.equal(err, null);
+        t.same(result.type, 'FeatureCollection');
+        t.same(result.features[0].properties.name, 'New Jersey');
+        t.same(result.features[0].geometry, {
             type: 'Point',
-            coordinates: [-74.38928604125977, 40.15027547340139]
+            coordinates: [-74.38928604125977, 40.150275473401365]
         });
         t.end();
     });
@@ -136,12 +151,12 @@ test('local file with directory zxy directory structure', function (t) {
         uri: './fixtures/9/150/194.mvt',
         layer: 'state_label'
     }, function (err, result) {
-        t.ifError(err);
-        t.deepEqual(result.type, 'FeatureCollection');
-        t.deepEqual(result.features[0].properties.name, 'New Jersey');
-        t.deepEqual(result.features[0].geometry, {
+        t.equal(err, null);
+        t.same(result.type, 'FeatureCollection');
+        t.same(result.features[0].properties.name, 'New Jersey');
+        t.same(result.features[0].geometry, {
             type: 'Point',
-            coordinates: [-74.38928604125977, 40.15027547340139]
+            coordinates: [-74.38928604125977, 40.150275473401365]
         });
         t.end();
     });
@@ -155,12 +170,12 @@ test('local file gzipped', function (t) {
         x: 150,
         y: 194
     }, function (err, result) {
-        t.ifError(err);
-        t.deepEqual(result.type, 'FeatureCollection');
-        t.deepEqual(result.features[0].properties.name, 'New Jersey');
-        t.deepEqual(result.features[0].geometry, {
+        t.equal(err, null);
+        t.same(result.type, 'FeatureCollection');
+        t.same(result.features[0].properties.name, 'New Jersey');
+        t.same(result.features[0].geometry, {
             type: 'Point',
-            coordinates: [-74.38928604125977, 40.15027547340139]
+            coordinates: [-74.38928604125977, 40.150275473401365]
         });
         t.end();
     });
